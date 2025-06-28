@@ -1,3 +1,9 @@
+✅ Objetivo:
+Criar um endereço http com IP público (com aplicação Node.js e página HTML estática), containerizar com Docker, subir o container para o EC2 na AWS automaticamente, usando uma pipeline CI/CD no GitHub Actions.
+
+
+
+
 | Ferramenta     | Detalhe                                                                  |
 | -------------- | ------------------------------------------------------------------------ |
 | AWS            | Conta ativa, com acesso para criar EC2, configurar chave SSH e abrir portas |
