@@ -1,0 +1,30 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH key
+      uses: webfactory/ssh-agent@v0.8.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to EC2 server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+          cd /home/ubuntu/my-website || mkdir -p /home/ubuntu/my-website && cd /home/ubuntu/my-website
+          git pull || git clone https://github.com/alexandredostatni/aws-docker-ci-cd.git .
+          docker build -t my-website .
+          docker stop my-website-container || true
+          docker rm my-website-container || true
+          docker run -d -p 3000:3000 --name my-website-container my-website
+        EOF
